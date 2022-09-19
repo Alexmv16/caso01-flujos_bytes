@@ -1,4 +1,4 @@
-package persistencia;
+package flujosdata;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,7 +10,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
 public class Persistencia {
-	File archivo;
+	private File archivo;
 
 	public Persistencia() {
 		archivo = new File("partidas.dat");
@@ -39,27 +39,18 @@ public class Persistencia {
 		dis.close();
 		return partida;
 	}
-	
+
+	// Ejercicio1
 	public List<Partida> leerTodos(int idJugador) throws IOException {
+		return new ArrayList<Partida>();
+	}
+
+	// Ejercicio2
+	public Partida leerMejorPuntuacion() throws IOException {
 		return null;
 	}
 
-	public Partida leerMejorPuntuacion() throws IOException {		
-		FileInputStream fis = new FileInputStream(archivo);
-		DataInputStream dis = new DataInputStream(fis);
-		Partida partida = leerRegistro(dis);
-		Partida partidaActual = null;
-		while (fis.available()>0) {
-			partidaActual = leerRegistro(dis);
-			if (partidaActual.getPuntos() > partida.getPuntos()) {
-				partida = partidaActual;
-			}
-		}
-		fis.close();
-		dis.close();
-		return partida;
-	}
-
+	// Ejercicio3
 	public Partida leerMejorPuntuacion(int idJugador) throws IOException {
 		return null;
 	}
