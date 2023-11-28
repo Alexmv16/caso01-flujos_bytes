@@ -1,27 +1,24 @@
 package tests;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.fail;
-
-import java.io.File;
-import java.io.IOException;
-
+import flujosdata.Partida;
+import flujosdata.Persistencia;
+import flujosobject.PersistenciaObj;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 
-import flujosdata.Partida;
-import flujosdata.Persistencia;
+import java.io.File;
+import java.io.IOException;
 
-class TestPersistencia {
-	static Persistencia persistenciaTest;
+import static org.junit.jupiter.api.Assertions.*;
+
+class TestPersistenciaObj {
+	static PersistenciaObj persistenciaTest;
 	static Partida p1, p2, p3, p4, p5;
 
 	@BeforeAll
 	static void setUp() {
-		File archivo = new File("partidas.dat");
+		File archivo = new File("partidasObj.dat");
 		if (archivo.exists()) {
 			archivo.delete();
 		}
@@ -31,7 +28,7 @@ class TestPersistencia {
 		p4 = new Partida(10, "Sergio", 1022, 2135.34);
 		p5 = new Partida(10, "Sergio", 1000, 2400.24);
 		try {
-			persistenciaTest = new Persistencia();
+			persistenciaTest = new PersistenciaObj();
 			persistenciaTest.guardar(p1);
 			persistenciaTest.guardar(p2);
 			persistenciaTest.guardar(p3);
@@ -39,8 +36,10 @@ class TestPersistencia {
 			persistenciaTest.guardar(p5);
 		} catch (IOException e) {
 			fail("El test falla al preparar el fichero");
-		}
-	}
+		} catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 	@Test
 	@Order(1)
@@ -51,7 +50,7 @@ class TestPersistencia {
 			assertEquals(mejorPartidaJug10, persistenciaTest.leerMejorPuntuacion(10));
 			assertEquals(mejorPartidaJug11, persistenciaTest.leerMejorPuntuacion(11));
 			assertNull(persistenciaTest.leerMejorPuntuacion(12));
-		} catch (IOException e) {
+		} catch (IOException | ClassNotFoundException e) {
 			fail("El test falla al ler fichero");
 		}
 	}
@@ -62,7 +61,7 @@ class TestPersistencia {
 		Partida mejorPartida = p3;
 		try {
 			assertEquals(mejorPartida, persistenciaTest.leerMejorPuntuacion());
-		} catch (IOException e) {
+		} catch (IOException | ClassNotFoundException e) {
 			fail("El test falla al leer fichero");
 		}
 	}
@@ -82,7 +81,7 @@ class TestPersistencia {
 			assertArrayEquals(partidasJug10, persistenciaTest.leerTodos(10).toArray());
 			assertArrayEquals(partidasJug11, persistenciaTest.leerTodos(11).toArray());
 			assertEquals(persistenciaTest.leerTodos(12).size(), 0);
-		} catch (IOException e) {
+		} catch (IOException | ClassNotFoundException e) {
 			fail("El test falla al leer fichero");
 		}
 

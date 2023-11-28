@@ -42,17 +42,58 @@ public class Persistencia {
 
 	// Ejercicio1
 	public List<Partida> leerTodos(int idJugador) throws IOException {
-		return new ArrayList<Partida>();
+		FileInputStream fis = new FileInputStream(archivo);
+		DataInputStream dis = new DataInputStream(fis);
+		ArrayList<Partida> partidas = new ArrayList<>();
+		Partida partida = null;
+		while (fis.available() > 0) {
+			partida = leerRegistro(dis);
+			if (partida.getIdJudador() == idJugador)
+				partidas.add(partida);
+		}
+		fis.close();
+		dis.close();
+		return partidas;
 	}
 
 	// Ejercicio2
 	public Partida leerMejorPuntuacion() throws IOException {
-		return null;
+		FileInputStream fis = new FileInputStream(archivo);
+		DataInputStream dis = new DataInputStream(fis);
+		Partida partida = null;
+		Partida maxPartida = null;
+
+		while (fis.available() > 0) {
+			if (partida == null){
+				maxPartida = leerRegistro(dis);
+			}
+			partida = leerRegistro(dis);
+			if (maxPartida.getPuntos()<partida.getPuntos()){
+				maxPartida = partida;
+			}
+		}
+
+		fis.close();
+		dis.close();
+		return maxPartida;
 	}
 
 	// Ejercicio3
 	public Partida leerMejorPuntuacion(int idJugador) throws IOException {
-		return null;
+		List<Partida> partidas = leerTodos(idJugador);
+		Partida partida = null;
+		Partida maxPartida = null;
+
+		for (Partida p :partidas) {
+			if (partida == null){
+				maxPartida = p;
+			}
+			partida = p;
+			if (maxPartida.getPuntos()<partida.getPuntos()){
+				maxPartida = partida;
+			}
+		}
+		return maxPartida;
 	}
 
 	private Partida leerRegistro(DataInputStream dis) throws IOException {

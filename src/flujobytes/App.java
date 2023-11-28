@@ -18,7 +18,7 @@ public class App {
 		// ¿Alguna conclusión?
 		long tiempoInicio = System.currentTimeMillis();
 		File fg = new File("ficherogrande.txt");
-		int tamBloque = 1000;	
+		int tamBloque = 100000;
 		System.out.println("tambloque: "+ tamBloque);
 		byte[] lecturaBloque = new byte[tamBloque];
 		try (FileInputStream fis = new FileInputStream(fg)) {
